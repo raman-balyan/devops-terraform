@@ -28,11 +28,15 @@ resource "aws_vpc" "main" {
 # Create your subnets here
 # =========================
 
+data "aws_availability_zones" "available" {
+  state = "available"
+}
+
 # Public Subnet
 resource "aws_subnet" "public_subnet" {
   vpc_id            = aws_vpc.main.id
   cidr_block        = module.subnets.network_cidr_blocks["public"]
-  availability_zone = var.availability_zone
+  availability_zone = data.aws_availability_zones.available.names[0]
   map_public_ip_on_launch = true
 
   tags = module.base_label.tags
@@ -41,8 +45,8 @@ resource "aws_subnet" "public_subnet" {
 # Private Subnet
 resource "aws_subnet" "private_subnet" {
   vpc_id            = aws_vpc.main.id
-  cidr_block        = module.subnets.network_cidr_blocks["public"]
-  availability_zone = var.availability_zone
+  cidr_block        = module.subnets.network_cidr_blocks["private"]
+  availability_zone = data.aws_availability_zones.available.names[0]
 
   tags = module.base_label.tags
 }

@@ -40,8 +40,3 @@ variable "vpc_cidr" {
   type        = string
   default     = "192.170.0.0/20"
 }
-
-variable "availability_zone" {
-  description = "The Availability Zone where the subnets will be created"
-  type        = string
-}
